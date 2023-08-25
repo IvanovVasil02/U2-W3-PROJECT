@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>BACKOFFICE</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">MyShop</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="backOffice.html">BackOffice</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- form -->
+
+    <div class="container">
+      <div class="row row-cols-1 row-md-cols-2 row-cols-lg-3 justify-content-center g-2"></div>
+    </div>
+
+    <!-- scripts -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const URL = "https://striveschool-api.herokuapp.com/api/product/";
+      const container = document.querySelector(".container .row");
+      const loadData = async () => {
+        try {
+          const response = await fetch(URL, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4NjQwYWMwMzRmZjAwMTQwM2Y1NmYiLCJpYXQiOjE2OTI5NTE1NjIsImV4cCI6MTY5NDE2MTE2Mn0.WzUEH9dUMb6Rhhvrm-VSLjHN5UujsM0u6efWoRms0A4",
+            },
+          });
+
+          const products = await response.json();
+          console.log(response);
+
+          products.forEach((product) => {
+            container.innerHTML += `
+                                    <div class="col">
+                                    <div class="card" >
+                                    <img src="${product.imageUrl}" class="card-img-top " height="400"  alt="..." />
+                                    <div class="card-body d-flex justify-content-between">
+                                        <h4 class="card-title">${product.name} ${product.price}€</h5>
+                                        
+                                          <div>
+                                              <a href="./details.html?productID=${product._id}" class="btn btn-primary">DI più</a>
+                                              <a href="./backOffice.html?productID=${product._id}" class="btn btn-secondary">Modifica</a>
+                                          
+                                          </div>
+                                    </div>
+                                    </div>
+                                    </div>`;
+          });
+        } catch (error) {
+          console.log(error.message);
+        }
+      };
+
+      window.onload = () => {
+        loadData();
+      };
+    </script>
+  </body>
+</html>
