@@ -2,6 +2,8 @@ const productId = new URLSearchParams(window.location.search).get("productID");
 const URL = productId
   ? "https://striveschool-api.herokuapp.com/api/product/" + productId
   : "https://striveschool-api.herokuapp.com/api/product/";
+const myKey =
+  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4NjQwYWMwMzRmZjAwMTQwM2Y1NmYiLCJpYXQiOjE2OTI5NTE1NjIsImV4cCI6MTY5NDE2MTE2Mn0.WzUEH9dUMb6Rhhvrm-VSLjHN5UujsM0u6efWoRms0A4";
 
 const container = document.querySelector(".container .row");
 
@@ -34,8 +36,7 @@ const getResponse = () => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4NjQwYWMwMzRmZjAwMTQwM2Y1NmYiLCJpYXQiOjE2OTI5NTE1NjIsImV4cCI6MTY5NDE2MTE2Mn0.WzUEH9dUMb6Rhhvrm-VSLjHN5UujsM0u6efWoRms0A4",
+      Authorization: myKey,
     },
   });
 
@@ -48,8 +49,7 @@ const formResponse = async (product) => {
     body: JSON.stringify(product),
     headers: {
       "Content-Type": "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4NjQwYWMwMzRmZjAwMTQwM2Y1NmYiLCJpYXQiOjE2OTI5NTE1NjIsImV4cCI6MTY5NDE2MTE2Mn0.WzUEH9dUMb6Rhhvrm-VSLjHN5UujsM0u6efWoRms0A4",
+      Authorization: myKey,
     },
   });
 
@@ -61,8 +61,7 @@ const deleteProduct = async () => {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4NjQwYWMwMzRmZjAwMTQwM2Y1NmYiLCJpYXQiOjE2OTI5NTE1NjIsImV4cCI6MTY5NDE2MTE2Mn0.WzUEH9dUMb6Rhhvrm-VSLjHN5UujsM0u6efWoRms0A4",
+      Authorization: myKey,
     },
   });
 
