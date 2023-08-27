@@ -30,10 +30,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="details.html">Home</a>
+              <a class="nav-link" aria-current="page" href="index.html">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">BackOffice</a>
+              <a class="nav-link" href="backOffice.html">BackOffice</a>
             </li>
           </ul>
         </div>
@@ -52,22 +52,14 @@
       integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
       crossorigin="anonymous"
     ></script>
+    <script src="script.js"></script>
 
     <script>
-      const container = document.querySelector(".container .row");
-      const productId = new URLSearchParams(window.location.search).get("productID");
-      const URL = "https://striveschool-api.herokuapp.com/api/product/" + productId;
-
       const loadData = async () => {
         try {
-          const response = await fetch(URL, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4NjQwYWMwMzRmZjAwMTQwM2Y1NmYiLCJpYXQiOjE2OTI5NTE1NjIsImV4cCI6MTY5NDE2MTE2Mn0.WzUEH9dUMb6Rhhvrm-VSLjHN5UujsM0u6efWoRms0A4",
-            },
-          });
+          const response = await getResponse();
+
+          await checkStatus(response.status);
 
           const product = await response.json();
 
@@ -90,7 +82,7 @@
                                     </div>
                                 </div>`;
         } catch (error) {
-          console.log(error.message);
+          container.innerHTML = `<h2 class="w-100">${error}</h2>`;
         }
       };
 

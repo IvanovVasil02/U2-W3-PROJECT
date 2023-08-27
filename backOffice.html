@@ -46,23 +46,25 @@
       <div class="row justify-content-center">
         <!-- form ssubmit -->
         <form class="col-xl-5 col-md-7 col-10 mt-5" onsubmit="handleSubmit(event)">
+          <h2>Aggiungi prodotto</h2>
+          <div class="alert alert-success m-0 p-1 d-none" role="alert">Aggiunto con successo!</div>
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Product Name</label>
+            <label for="name" class="form-label">Product Name</label>
             <input type="text" class="form-control" id="name" required />
           </div>
 
           <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Descritption</label>
+            <label for="description" class="form-label">Descritption</label>
             <input type="text" class="form-control" id="description" required />
           </div>
 
           <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Brand Name</label>
+            <label for="brand" class="form-label">Brand Name</label>
             <input type="text" class="form-control" id="brand" required />
           </div>
 
           <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Image Url</label>
+            <label for="image" class="form-label">Image Url</label>
             <input type="text" class="form-control" id="imageUrl" required />
           </div>
 
@@ -75,16 +77,24 @@
         </form>
         <!-- form ssubmit end-->
 
-        <!-- <form class="col-xl-5 d-flex mr-4" role="search" onsubmit="getSearch(event)">
-            <input
-              id="search-input"
-              class="form-control me-2"
-              type="search"
-              placeholder="Iserisci Id del prodotto da modificare"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">Search</button>
+        <!-- 
           </form> -->
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">Sei sicuro di voler procedere con l'eliminazione del prodotto?</div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="delBtn">Si</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
 
@@ -96,5 +106,71 @@
       crossorigin="anonymous"
     ></script>
     <script src="script.js"></script>
+    <script>
+      const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const product = {
+          name: document.getElementById("name").value,
+          description: document.getElementById("description").value,
+          brand: document.getElementById("brand").value,
+          imageUrl: document.getElementById("imageUrl").value,
+          price: document.getElementById("price").value,
+        };
+
+        console.log(product);
+
+        try {
+          const response = await formResponse(product);
+
+          await checkStatus();
+
+          if (response.ok) {
+            const sendedProduct = await response.json();
+            clearInput();
+            successAdded();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      const loadData = async () => {
+        try {
+          const response = await getResponse();
+          await checkStatus(response.status);
+
+          const product = await response.json();
+          document.getElementById("name").value = `${product.name}`;
+          document.getElementById("description").value = `${product.description}`;
+          document.getElementById("brand").value = `${product.brand}`;
+          document.getElementById("imageUrl").value = `${product.imageUrl}`;
+          document.getElementById("price").value = `${product.price}`;
+        } catch (error) {
+          container.innerHTML = `<h2 class="w-100">${error}</h2>`;
+        }
+      };
+
+      window.onload = async () => {
+        const submitBtn = document.querySelector("button[type='submit']");
+
+        if (productId) {
+          loadData();
+          submitBtn.innerHTML = "Modifica";
+          document.querySelector("form h2").innerHTML = "Modifica prodotto";
+
+          document.querySelector(
+            "form"
+          ).innerHTML += `<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Elimina</button>`;
+          document.querySelector(
+            "form"
+          ).innerHTML += `<a href="index.html" class="btn btn-secondary ms-1" >Torna indietro</button>`;
+          const deleteBtn = document.querySelector("#delBtn");
+          deleteBtn.onclick = () => {
+            deleteProduct();
+          };
+        }
+      };
+    </script>
   </body>
 </html>
